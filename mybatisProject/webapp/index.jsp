@@ -44,6 +44,8 @@
 	 -->
 	
 	<!-- index 페이지 로딩 되자마자 WEB-INF/views/main.jsp로 곧바로 포워딩 -->
+	<!-- 기존까지 views 폴더를 webapp바로 밑에 만들었지만 그렇게하면 경로를 url 통해서 다 볼 수 있음 -->
+	<!-- 그래서 이제 web-inf안에 views를 만들고 앞으로 포워딩방식으로만 jsp넘어가게 할거임 -->
 	<jsp:forward page="WEB-INF/views/main.jsp"/>
 	
 	
