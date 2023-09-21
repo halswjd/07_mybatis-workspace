@@ -13,6 +13,8 @@
 	<!-- typeAliases : VO/DTO 클래스들의 풀클래스명을 단순한 클래스명으로 사용하기 위해서 별칭을 등록할 수 있는 영역 -->
 	<typeAliases>
 		<typeAlias type="com.kh.mybatis.member.model.vo.Member" alias="Member"/>
+		<typeAlias type="com.kh.mybatis.board.model.vo.Board" alias="Board"/>
+		<typeAlias type="com.kh.mybatis.board.model.vo.Reply" alias="Reply"/>
 	</typeAliases>
 	
 	<!-- environment : mybatis에서 연동할 DB 정보들을 등록하는 영역 -->
@@ -52,6 +54,8 @@
 		<mapper resource="/mappers/member-mapper.xml" />
 		<!-- '/' : 모든 소스폴더의 최상위 경로(resources 또는 src) -->
 		<!-- resources 폴더가 그냥 폴더가 아닌 소스폴더로 만든 이유 -->
+		
+		<mapper resource="/mappers/board-mapper.xml"/>
 	</mappers>
 		
 		

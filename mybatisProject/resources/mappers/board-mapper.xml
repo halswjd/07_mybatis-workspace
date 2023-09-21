@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="boardMapper">
+
+	<!-- db에서 board 테이블의 컬럼명과 board객체에서 필드명이랑 다르기 때문에 맞춰주는거임, 보통 위에 작성 -->
+	<resultMap type="Board" id="boardResultSet">
+		<result column="board_no" property="boardNo"/>
+		<result column="board_title" property="boardTitle"/>
+		<result column="user_id" property="boardWriter"/>
+		<result column="count" property="count"/>
+		<result column="create_date" property="createDate"/>
+		<result column="board_content" property="boardContent"/>
+	</resultMap>
+	
+	<resultMap type="Reply" id="replyResultSet">
+		<result column="reply_no" property="replyNo"/>
+		<result column="reply_content" property="replyContent"/>
+		<result column="user_id" property="replyWriter"/>
+		<result column="create_date" property="createDate"/>
+	</resultMap>
+
+	<select id="selectListCount" resultType="_int"> <!-- 조회되는 결과가 int나 String 자료형이면 resultType, 객체면 resultMap -->
+		select
+		       count(*)
+		  from board
+		 where status = 'Y'
+	</select>
+
+	<select id="selectList" resultMap="boardResultSet">
+		select
+		       board_no
+		     , board_title
+		     , user_id
+		     , count
+		     , create_date
+		  from board b
+		  join member on (user_no = board_writer)
+		 where b.status = 'Y'
+		 order
+		    by board_no desc
+	</select>
+	
+	<update id="increaseCount" parameterType="_int">
+		update board
+		   set count = count + 1
+		 where board_no = #{boardNo} <!-- Dao에서 넘기는 int의 변수명과 일치해야함 -->
+		   and status = 'Y'
+	</update>
+	
+	<select id="selectBoard" parameterType="_int" resultMap="boardResultSet">
+		select
+			   board_no
+			 , board_title
+			 , user_id
+			 , count
+			 , create_date
+			 , board_content
+		  from board
+		  join member on (board_writer = user_no)
+		 where board_no = #{boardNo}
+	</select>
+	
+	<select id="selectReplyList" resultMap="replyResultSet" parameterType="_int">
+		select
+			   reply_no
+			 , user_id
+			 , reply_content
+			 , create_date
+		  from reply r
+		  join member on (user_no = reply_writer)
+		 where r.status = 'Y'
+		   and ref_bno = #{boardNo}
+		 order
+		    by reply_no desc 
+	</select>
+	
+	<select id="selectSearchCount" resultType="_int"> <!-- HashMap을 전달받으면 parameterType 생략 가능 -->
+		select
+		       count(*)
+		  from board b
+		  join member on (board_writer = user_no)
+		 where b.status = 'Y'
+		 <if test="condition == 'writer'">
+		   and user_id  -- 작성자로 키워드 검색
+		 </if>
+		 <if test="condition == 'title'">
+		   and board_title  -- 제목으로 키워드 검색
+		 </if>
+		 <if test="condition == 'content'">
+		   and board_content  -- 내용으로 키워드 검색
+		 </if>
+		       like '%' || #{keyword} || '%'
+	</select>
+	
+	<select id="selectSearchList" resultMap="boardResultSet">
+		select
+		       board_no
+		     , board_title
+		     , user_id
+		     , count
+		     , create_date
+		  from board b
+		  join member on (user_no = board_writer)
+		 where b.status = 'Y'
+		 <choose>
+		   	<when test="condition == 'writer'">
+		   		and user_id
+		   	</when>
+		   	<when test="condition == 'title'">
+		   		and board_title
+		   	</when>
+		   	<otherwise>
+		   		and board_content
+		   	</otherwise>
+		 </choose>
+		       like '%' || #{keyword} || '%'
+		 order
+		    by board_no desc
+	</select>
+</mapper>
