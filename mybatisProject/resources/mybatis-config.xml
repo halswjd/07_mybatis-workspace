@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-config.dtd"> <!-- 위의 세줄은 유효성판단 코드 -->
+  "https://mybatis.org/dtd/mybatis-3-config.dtd"> <!-- 위의 세줄은 환경설정에 맞는 태그들만 들어갔는지 확인하는 유효성판단 코드 -->
 <configuration>
 
 	<!-- setting : mybatis 구동시 선언할 설정들을 작성하는 영역 -->

@@ -6,6 +6,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+	.outer a{
+		text-decoration:none;
+		color:white;
+	}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
 
@@ -15,6 +22,8 @@
         <br>
         <h1 align="center">게시판 상세조회</h1>
 
+        
+        
         <table align="center" border="1">
             <tr>
                 <td width="100">글번호</td>
@@ -44,6 +53,18 @@
             </tr>
         </table>
 
+		<c:if test="${ loginMember.userId eq b.boardWriter }">
+        	<button id="dBtn">글 삭제</button>
+        </c:if>
+        
+        <script>
+        	$("#dBtn").click(function(){
+        		if(confirm("해당 글을 삭제하시겠습니까?")){
+        			location.href="delete.bo?bno=${b.boardNo}";
+        		}
+        		
+        	})
+        </script>
         <br>
 
         <table align="center" border="1">
